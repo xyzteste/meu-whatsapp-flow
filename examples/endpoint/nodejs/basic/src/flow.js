@@ -1,8 +1,12 @@
 export const getNextScreen = async (decryptedBody) => {
   const { screen, data, action } = decryptedBody;
 
-  console.log(JSON.stringify(decryptedBody, null, 2));
+  console.log(
+    "REQUEST:",
+    JSON.stringify(decryptedBody, null, 2)
+  );
 
+  // Health Check
   if (action === "ping") {
     return {
       data: {
@@ -11,28 +15,28 @@ export const getNextScreen = async (decryptedBody) => {
     };
   }
 
-  if (action === "data_exchange") {
-
-    // Tela inicial
-    if (screen === "WELCOME") {
-      return {
-        screen: "MY_SCREEN",
-        data: {
-          greeting: "Hey there! 👋"
-        }
-      };
-    }
-
-    // Tela do formulário
-    if (screen === "MY_SCREEN") {
-      return {
-        screen: "SUCCESS",
-        data: {
-          username: data.name
-        }
-      };
-    }
+  // Primeira tela -> segunda tela
+  if (action === "data_exchange" && screen === "WELCOME") {
+    return {
+      screen: "FORM",
+      data: {
+        greeting: "Seja Bem Vindo! 👋"
+      }
+    };
   }
 
-  throw new Error("Unhandled request");
+  // Segunda tela -> tela final
+  if (action === "data_exchange" && screen === "FORM") {
+    return {
+      screen: "SUCCESS",
+      data: {
+        name: data.name
+      }
+    };
+  }
+
+  throw new Error(
+    `Unhandled request. action=${action} screen=${screen}`
+  );
 };
+`
