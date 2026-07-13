@@ -6,6 +6,10 @@
  */
 
 export const getNextScreen = async (decryptedBody) => {
+  console.log(
+    "REQUEST RECEIVED:",
+    JSON.stringify(decryptedBody, null, 2)
+  );
   const { screen, data, version, action, flow_token } = decryptedBody;
   // handle health check request
   if (action === "ping") {
