@@ -6,7 +6,6 @@ export const getNextScreen = async (decryptedBody) => {
     JSON.stringify(decryptedBody, null, 2)
   );
 
-  // Health Check
   if (action === "ping") {
     return {
       data: {
@@ -15,7 +14,6 @@ export const getNextScreen = async (decryptedBody) => {
     };
   }
 
-  // Primeira tela -> segunda tela
   if (action === "data_exchange" && screen === "WELCOME") {
     return {
       screen: "FORM",
@@ -25,10 +23,9 @@ export const getNextScreen = async (decryptedBody) => {
     };
   }
 
-  // Segunda tela -> tela final
   if (action === "data_exchange" && screen === "FORM") {
     return {
-      screen: "SUCCESS",
+      screen: "OBRIGADO",
       data: {
         name: data.name
       }
