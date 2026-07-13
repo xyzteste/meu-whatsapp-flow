@@ -39,4 +39,3 @@ export const getNextScreen = async (decryptedBody) => {
     `Unhandled request. action=${action} screen=${screen}`
   );
 };
-`
