@@ -1,71 +1,38 @@
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
 export const getNextScreen = async (decryptedBody) => {
-  console.log(
-    "REQUEST RECEIVED:",
-    JSON.stringify(decryptedBody, null, 2)
-  );
-  const { screen, data, version, action, flow_token } = decryptedBody;
-  // handle health check request
+  const { screen, data, action } = decryptedBody;
+
+  console.log(JSON.stringify(decryptedBody, null, 2));
+
   if (action === "ping") {
     return {
       data: {
-        status: "active",
-      },
-    };
-  }
-
-  // handle error notification
-  if (data?.error) {
-    console.warn("Received client error:", data);
-    return {
-      data: {
-        acknowledged: true,
-      },
-    };
-  }
-
-  // handle initial request when opening the flow
-  if (action === "INIT") {
-    return {
-      screen: "MY_SCREEN",
-      data: {
-        // custom data for the screen
-        greeting: "Hey there! 👋",
-      },
+        status: "active"
+      }
     };
   }
 
   if (action === "data_exchange") {
-    // handle the request based on the current screen
-    switch (screen) {
-      case "MY_SCREEN":
-        // TODO: process flow input data
-        console.info("Input name:", data?.name);
 
-        // send success response to complete and close the flow
-        return {
-          screen: "SUCCESS",
-          data: {
-            extension_message_response: {
-              params: {
-                flow_token,
-              },
-            },
-          },
-        };
-      default:
-        break;
+    // Tela inicial
+    if (screen === "WELCOME") {
+      return {
+        screen: "MY_SCREEN",
+        data: {
+          greeting: "Hey there! 👋"
+        }
+      };
+    }
+
+    // Tela do formulário
+    if (screen === "MY_SCREEN") {
+      return {
+        screen: "SUCCESS",
+        data: {
+          username: data.name
+        }
+      };
     }
   }
 
-  console.error("Unhandled request body:", decryptedBody);
-  throw new Error(
-    "Unhandled endpoint request. Make sure you handle the request action & screen logged above."
-  );
+  throw new Error("Unhandled request");
 };
