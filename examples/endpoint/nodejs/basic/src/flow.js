@@ -1,38 +1,59 @@
 export const getNextScreen = async (decryptedBody) => {
-  const { screen, data, action } = decryptedBody;
+  const { screen, data, action, flow_token } = decryptedBody;
 
-  console.log(
-    "REQUEST:",
-    JSON.stringify(decryptedBody, null, 2)
-  );
+  console.log("REQUEST:", JSON.stringify(decryptedBody, null, 2));
 
+  // 1. Health check obrigatório pro Meta
   if (action === "ping") {
     return {
       data: {
-        status: "active"
-      }
+        status: "active",
+      },
     };
   }
 
+  // 2. Tratamento de erro: INIT do Flow
+  if (action === "INIT") {
+    return {
+      screen: "WELCOME",
+      data: {}
+    };
+  }
+
+  // 3. WELCOME -> FORM
   if (action === "data_exchange" && screen === "WELCOME") {
     return {
       screen: "FORM",
       data: {
-        greeting: "Seja Bem Vindo! 👋"
+        greeting: "Seja Bem Vindo! 👋",
+        // você pode passar o flow_token pra frente se precisar
+        flow_token
       }
     };
   }
 
+  // 4. FORM -> OBRIGADO
   if (action === "data_exchange" && screen === "FORM") {
+    const userName = data?.name?.trim();
+    
+    if (!userName) {
+      return {
+        error_message: "Por favor, digite seu nome para continuar."
+      }
+    }
+
+    // Aqui você salva no banco, manda pra CRM, etc
+    // await saveToDatabase({ name: userName, flow_token });
+
     return {
       screen: "OBRIGADO",
       data: {
-        name: data.name
+        name: userName
       }
     };
   }
 
-  throw new Error(
-    `Unhandled request. action=${action} screen=${screen}`
-  );
+  // 5. Log do erro antes de lançar
+  console.error(`Unhandled request. action=${action} screen=${screen}`, decryptedBody);
+  throw new Error(`Unhandled request. action=${action} screen=${screen}`);
 };
