@@ -25,9 +25,7 @@ export const getNextScreen = async (decryptedBody) => {
     return {
       screen: "FORM",
       data: {
-        greeting: "Seja Bem Vindo! 👋",
-        // você pode passar o flow_token pra frente se precisar
-        flow_token
+        greeting: "Seja Bem Vindo! 👋"
       }
     };
   }
