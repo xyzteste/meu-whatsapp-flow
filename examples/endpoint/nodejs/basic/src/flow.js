@@ -29,6 +29,27 @@ export const getNextScreen = async (decryptedBody) => {
       }
     };
   }
+  
+  if (action === "data_exchange" && screen === "WELCOME") {
+	  const now = new Date();
+
+	  const dataFormatada = now.toLocaleDateString("pt-BR", {
+		timeZone: "America/Sao_Paulo"
+	  });
+
+	  const horaFormatada = now.toLocaleTimeString("pt-BR", {
+		timeZone: "America/Sao_Paulo",
+		hour: "2-digit",
+		minute: "2-digit"
+	  });
+
+	  return {
+		screen: "FORM",
+		data: {
+		  greeting: `Hoje é dia ${dataFormatada}, às ${horaFormatada} horas. Seja Bem Vindo! 👋`
+		}
+	  };
+	}
 
   // 4. FORM -> FINAL_TESTE
   if (action === "data_exchange" && screen === "FORM") {
