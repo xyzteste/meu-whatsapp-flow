@@ -21,15 +21,7 @@ export const getNextScreen = async (decryptedBody) => {
   }
 
   // 3. WELCOME -> FORM
-  if (action === "data_exchange" && screen === "WELCOME") {
-    return {
-      screen: "FORM",
-      data: {
-        greeting: "Seja Bem Vindo! 👋"
-      }
-    };
-  }
-  
+ 
   if (action === "data_exchange" && screen === "WELCOME") {
 	  const now = new Date();
 
