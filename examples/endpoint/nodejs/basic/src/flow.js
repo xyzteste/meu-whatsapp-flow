@@ -30,7 +30,7 @@ export const getNextScreen = async (decryptedBody) => {
     };
   }
 
-  // 4. FORM -> OBRIGADO
+  // 4. FORM -> FINAL_TESTE
   if (action === "data_exchange" && screen === "FORM") {
     const userName = data?.name?.trim();
     
@@ -44,7 +44,7 @@ export const getNextScreen = async (decryptedBody) => {
     // await saveToDatabase({ name: userName, flow_token });
 
     return {
-      screen: "OBRIGADO",
+      screen: "FINAL_TESTE",
       data: {
         name: userName
       }
