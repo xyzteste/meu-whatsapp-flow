@@ -38,7 +38,7 @@ export const getNextScreen = async (decryptedBody) => {
 	  return {
 		screen: "FORM",
 		data: {
-		  greeting: `Hoje é dia ${dataFormatada}, às ${horaFormatada} horas. Seja Bem Vindo! 👋`
+		  greeting: `Hoje é dia ${dataFormatada}, às ${horaFormatada} horas. Seja Bem Vindo!! 👋`
 		}
 	  };
 	}
